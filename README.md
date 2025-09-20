@@ -2,6 +2,13 @@
 
 This toolkit generates synthetic 3D point cloud data with measurement uncertainty (covariance matrices) for testing parallel clustering algorithms.
 
+## ?? Key Features
+
+### Automatic Dependency Management
+- **No manual Eigen installation needed!** The build system automatically downloads and configures Eigen3 if it's not found on your system
+- Works on Windows, Linux, and macOS
+- Zero configuration required - just build and run
+
 ## Features
 
 - Generates multiple Gaussian clusters in 3D space
@@ -14,27 +21,65 @@ This toolkit generates synthetic 3D point cloud data with measurement uncertaint
 ## Building
 
 ### Prerequisites
-- C++17 compatible compiler
-- Eigen3 library
-- CMake (optional)
-- Python3 with matplotlib, numpy (for visualization)
+- C++17 compatible compiler (g++, clang++, or MSVC)
+- CMake 3.14+ (will auto-download Eigen if needed)
+- Python3 with matplotlib, numpy (optional, for visualization)
 
-### Compilation
+### Quick Build (Recommended)
 
-**Option 1: Using CMake**
+**Linux/macOS:**
 ```bash
-mkdir build
-cd build
-cmake ..
-make
+chmod +x build.sh
+./build.sh
 ```
 
-**Option 2: Direct compilation**
+**Windows:**
+```cmd
+build.bat
+```
+
+The build scripts will:
+- Check for all requirements
+- **Automatically download Eigen3 if not found**
+- Configure and build the project
+- Report the executable location
+
+### Manual Build with CMake
+
+**Option 1: Basic CMake (auto-downloads Eigen if needed)**
+```bash
+mkdir build && cd build
+cmake ..
+cmake --build . --config Release
+```
+
+**Option 2: Advanced CMake with options**
+```bash
+mkdir build && cd build
+cmake .. \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DDOWNLOAD_EIGEN=ON \
+  -DENABLE_OPENMP=ON \
+  -DBUILD_TESTS=ON
+make -j$(nproc)
+```
+
+**CMake Options:**
+- `USE_SYSTEM_EIGEN`: Try system Eigen first (default: ON)
+- `DOWNLOAD_EIGEN`: Auto-download if not found (default: ON)  
+- `EIGEN_USE_GIT`: Use Git instead of archive (default: OFF)
+- `EIGEN3_ROOT_DIR`: Custom Eigen installation path
+- `ENABLE_OPENMP`: Enable parallel features (default: ON)
+- `BUILD_TESTS`: Build test programs (default: OFF)
+
+### Direct Compilation (if Eigen is installed)
 ```bash
 g++ -std=c++17 -O3 -I/usr/include/eigen3 data_generator.cpp -o data_generator
 ```
 
-### Installing Eigen3
+### Installing Eigen3 Manually (Optional)
+The build system will **automatically download Eigen** if not found, but you can install it manually:
+
 ```bash
 # Ubuntu/Debian
 sudo apt-get install libeigen3-dev
@@ -44,6 +89,9 @@ brew install eigen
 
 # Fedora
 sudo dnf install eigen3-devel
+
+# Windows (vcpkg)
+vcpkg install eigen3
 ```
 
 ## Usage
@@ -228,4 +276,4 @@ Advanced Parallel Computing, 2024
 
 ## License
 
-Educational use only. Part of graduate coursework assignment.# Clustering
+Educational use only. Part of graduate coursework assignment.

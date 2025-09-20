@@ -1,3 +1,5 @@
 /Lab1_Generator.vcxproj
 /Lab1_Generator.vcxproj.filters
 /Lab1_Generator.vcxproj.user
+/build/*
+/.ipynb_checkpoints/*
